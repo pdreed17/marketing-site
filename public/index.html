@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Kollab — Your songs deserve to be finished</title>
+  <meta name="description" content="Find your collaborators. Music Kollab helps indie artists share ideas, discover collaborators, and finish songs together.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://musickollab.app/">
+  <meta property="og:title" content="Music Kollab — Your songs deserve to be finished">
+  <meta property="og:description" content="Find your collaborators. Music Kollab helps indie artists share ideas, discover collaborators, and finish songs together.">
+  <meta property="og:image" content="https://musickollab.app/og-image.png">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://musickollab.app/">
+  <meta name="twitter:title" content="Music Kollab — Your songs deserve to be finished">
+  <meta name="twitter:description" content="Find your collaborators. Music Kollab helps indie artists share ideas, discover collaborators, and finish songs together.">
+  <meta name="twitter:image" content="https://musickollab.app/og-image.png">
+  
+  <!-- Theme -->
+  <meta name="theme-color" content="#0a0a0f">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a24;
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --accent-subtle: rgba(99, 102, 241, 0.1);
+      --border: rgba(255, 255, 255, 0.08);
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Satoshi', -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background */
+    .ambient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(ellipse at 20% 20%, var(--accent-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+      animation: ambient-drift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambient-drift {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-5%, -5%) rotate(3deg); }
+    }
+
+    /* Grain overlay */
+    .grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Layout */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 32px 0;
+      opacity: 0;
+      animation: fade-in 0.8s ease forwards;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg {
+      width: 18px;
+      height: 18px;
+      color: white;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--accent-subtle);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.875rem;
+      color: var(--accent);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.2s;
+    }
+
+    .hero-label::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.3s;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 48px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.4s;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fade-up {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
+
+    /* Form */
+    .signup-form {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 420px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.5s;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-subtle);
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 48px;
+    }
+
+    .form-group select option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--accent-glow);
+    }
+
+    .submit-btn:hover::before {
+      opacity: 1;
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .form-bonus {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .form-bonus svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent);
+    }
+
+    /* Social proof */
+    .proof {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 80px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.7s;
+    }
+
+    .proof-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .proof-item {
+      padding: 24px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .proof-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .proof-number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .proof-song {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .proof-detail {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Problem section */
+    .problem {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .problem h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .problem p {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      max-width: 540px;
+      margin: 0 auto 16px;
+    }
+
+    .problem-highlight {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Features */
+    .features {
+      padding: 40px 0 80px;
+    }
+
+    .features-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--accent-subtle) 100%);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-subtle);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      color: var(--accent);
+    }
+
+    .feature-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .feature-content p {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .cta p {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .cta .signup-form {
+      animation: none;
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .hero {
+        padding: 60px 0 40px;
+      }
+
+      .signup-form {
+        padding: 24px;
+        border-radius: 16px;
+      }
+
+      .proof-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .proof-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-align: left;
+        padding: 16px 20px;
+      }
+
+      .proof-number {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+      }
+
+      .proof-text {
+        flex: 1;
+      }
+
+      .proof-song {
+        margin-bottom: 0;
+      }
+    }
+
+    /* Success state */
+    .form-success {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .form-success-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .form-success-icon svg {
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+
+    .form-success h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .form-success p {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .download-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-subtle);
+    }
+
+    .download-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient"></div>
+  <div class="grain"></div>
+
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"/>
+            <circle cx="6" cy="18" r="3"/>
+            <circle cx="18" cy="16" r="3"/>
+          </svg>
+        </div>
+        Music Kollab
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-label">Coming soon to iOS & Android</div>
+      <h1>Your songs deserve<br>to be <em>finished</em></h1>
+      <p class="hero-sub">You have the talent. What you need is a team. Music Kollab helps indie artists find collaborators and release music together.</p>
+
+      <form class="signup-form" id="waitlist-form">
+        <div class="form-group">
+          <label for="name">First name</label>
+          <input type="text" id="name" name="name" placeholder="Maya" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="maya@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="role">I'm primarily a...</label>
+          <select id="role" name="role" required>
+            <option value="" disabled selected>Select your specialty</option>
+            <option value="vocalist">Vocalist / Singer</option>
+            <option value="guitarist">Guitarist</option>
+            <option value="pianist">Pianist / Keys</option>
+            <option value="instrumentalist">Other Instrumentalist</option>
+            <option value="producer">Producer / Beatmaker</option>
+            <option value="songwriter">Songwriter / Lyricist</option>
+            <option value="multiple">Multiple / All-around</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">Join the Waitlist</button>
+        <div class="form-bonus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Plus, get our free guide: "How to Find Your First Collaborator"
+        </div>
+      </form>
+
+      <div class="signup-form form-success hidden" id="success-message">
+        <div class="form-success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3>You're on the list!</h3>
+        <p>Check your inbox for the welcome email and your free guide.</p>
+        <a href="#" class="download-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download Your Free Guide
+        </a>
+      </div>
+    </section>
+
+    <section class="proof">
+      <div class="proof-label">The artists you admire didn't do it alone</div>
+      <div class="proof-grid">
+        <div class="proof-item">
+          <div class="proof-number">11</div>
+          <div class="proof-text">
+            <div class="proof-song">"Uptown Funk"</div>
+            <div class="proof-detail">songwriters</div>
+          </div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">5</div>
+          <div class="proof-text">
+            <div class="proof-song">"Blinding Lights"</div>
+            <div class="proof-detail">collaborators</div>
+          </div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">4</div>
+          <div class="proof-text">
+            <div class="proof-song">"Bad Guy"</div>
+            <div class="proof-detail">collaborators</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="problem">
+      <h2>You're not stuck.<br>You're just missing collaborators.</h2>
+      <p>You have voice memos full of ideas. Lyrics in your Notes app. A guitar riff that could be something.</p>
+      <p>But you can't find anyone to work with. You don't know any producers. You've tried posting online but nothing happens.</p>
+      <p class="problem-highlight">The difference between your music and the songs you love isn't talent—it's collaboration.</p>
+    </section>
+
+    <section class="features">
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h3>Capture ideas instantly</h3>
+            <p>Record voice memos and upload demos. Even a rough idea is enough to start.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h3>Discover your collaborators</h3>
+            <p>Browse ideas from other artists. When you vibe with something, request to collaborate.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h3>Work together seamlessly</h3>
+            <p>Project chat, timestamped feedback, organized stems. Everything in one place.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h3>Finish songs you're proud of</h3>
+            <p>Not just start them. Turn your ideas into real releases with your new team.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <h2>Talent gets you started. Collaboration gets you finished.</h2>
+      <p>Join the waitlist and be first to find your collaborators.</p>
+      
+      <form class="signup-form" id="waitlist-form-2">
+        <div class="form-group">
+          <label for="name2">First name</label>
+          <input type="text" id="name2" name="name" placeholder="Maya" required>
+        </div>
+        <div class="form-group">
+          <label for="email2">Email</label>
+          <input type="email" id="email2" name="email" placeholder="maya@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="role2">I'm primarily a...</label>
+          <select id="role2" name="role" required>
+            <option value="" disabled selected>Select your specialty</option>
+            <option value="vocalist">Vocalist / Singer</option>
+            <option value="guitarist">Guitarist</option>
+            <option value="pianist">Pianist / Keys</option>
+            <option value="instrumentalist">Other Instrumentalist</option>
+            <option value="producer">Producer / Beatmaker</option>
+            <option value="songwriter">Songwriter / Lyricist</option>
+            <option value="multiple">Multiple / All-around</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">Join the Waitlist</button>
+        <div class="form-bonus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Plus, get our free guide: "How to Find Your First Collaborator"
+        </div>
+      </form>
+    </section>
+
+    <footer>
+      <div class="footer-links">
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="#">Twitter</a>
+      </div>
+      <div class="footer-copy">© 2026 Music Kollab. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Form submission handling
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Here you would send to your email service (ConvertKit, Buttondown, etc.)
+        console.log('Form submitted:', data);
+        
+        // Show success state for first form
+        if (this.id === 'waitlist-form') {
+          this.classList.add('hidden');
+          document.getElementById('success-message').classList.remove('hidden');
+        } else {
+          // For second form, show alert (or redirect)
+          this.innerHTML = `
+            <div class="form-success">
+              <div class="form-success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <h3>You're on the list!</h3>
+              <p>Check your inbox for the welcome email.</p>
+            </div>
+          `;
+        }
+        
+        // Scroll to top of form
+        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  </script>
+</body>
+</html>

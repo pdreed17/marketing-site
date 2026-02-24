@@ -1,14 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1"/>
-      <stop offset="100%" style="stop-color:#8b5cf6"/>
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="8" fill="url(#grad)"/>
-  <g fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(7, 7)">
-    <path d="M4 14V2l10-1.5v11"/>
-    <circle cx="2" cy="14" r="2"/>
-    <circle cx="12" cy="12.5" r="2"/>
-  </g>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background -->
+  <rect width="32" height="32" fill="#000000"/>
+  
+  <!-- White "ko" -->
+  <text x="2" y="24" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">ko</text>
+  
+  <!-- Purple bars -->
+  <rect x="13" y="10" width="2" height="12" rx="1" fill="#6366F1"/>
+  <rect x="16" y="8" width="2" height="16" rx="1" fill="#6366F1"/>
+  
+  <!-- White "ab" -->
+  <text x="19" y="24" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">ab</text>
 </svg>

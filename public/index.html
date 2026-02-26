@@ -95,7 +95,6 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
       scroll-padding: 0;
       background: #0A0A0A;
     }
@@ -300,8 +299,6 @@
       justify-content: center;
       padding: 0;
       position: relative;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
 
     .hero header {
@@ -882,8 +879,6 @@
       align-items: center;
       padding: 40px 0;
       position: relative;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       overflow: hidden;
     }
 
@@ -1021,8 +1016,6 @@
       align-items: flex-start;
       padding: 40px 0 40px 0;
       position: relative;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       overflow: hidden;
     }
 
@@ -1377,8 +1370,6 @@
       padding: 0;
       position: relative;
       overflow: hidden;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
 
     .problem-section::before {
@@ -1446,8 +1437,6 @@
       display: flex;
       align-items: center;
       padding: 0;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       overflow: hidden;
     }
 
@@ -1577,8 +1566,6 @@
       justify-content: center;
       padding: 40px 0 0 0;
       position: relative;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       overflow: visible;
     }
 
@@ -2257,18 +2244,15 @@
       .content-column {
         margin-left: 0;
         width: 100%;
-        scroll-snap-type: none;  /* Disable snapping on mobile */
       }
 
-      /* Remove fixed heights and scroll-snap on mobile for natural flow */
+      /* Remove fixed heights on mobile for natural flow */
       .hero,
       .vision-section,
       .stats-section,
       .cta-section {
         min-height: auto !important;
         height: auto !important;
-        scroll-snap-align: none;  /* Disable snap points */
-        scroll-snap-stop: normal;
       }
 
       .hero {
@@ -3143,7 +3127,7 @@
     function updateVinylText() {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
-      const triggerPoint = scrollY + (windowHeight * 0.4);
+      const triggerPoint = scrollY + (windowHeight * 0.5); // Center of viewport
 
       let currentSectionIndex = '0';
 

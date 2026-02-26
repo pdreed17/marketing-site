@@ -3138,8 +3138,10 @@
         const sectionTop = section.offsetTop;
         const sectionBottom = sectionTop + section.offsetHeight;
 
-        // Section is active when it enters the viewport
-        if (scrollY >= sectionTop - windowHeight) {
+        // Section is active when its first heading reaches the top of viewport
+        // Each section has 120px padding-top, so first heading is at sectionTop + 120
+        // Use +20 buffer for smooth transition before exact top
+        if (scrollY >= sectionTop + 20) {
           currentSectionIndex = section.getAttribute('data-section');
           console.log('>>> MATCH! Section', currentSectionIndex, 'scrollY:', scrollY, 'sectionTop:', sectionTop);
         }

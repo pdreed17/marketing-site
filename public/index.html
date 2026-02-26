@@ -1026,7 +1026,7 @@
 
     .stats-header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 0;
       margin-top: 0;
       padding-top: 0;
     }
@@ -1038,7 +1038,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--primary-light);
-      margin-bottom: 16px;
+      margin-bottom: 8px;
     }
 
     .section-title {
@@ -3131,8 +3131,8 @@
 
     function updateVinylText() {
       const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const triggerPoint = scrollY + 120; // Top of viewport + small offset for section heading
+      const viewportTop = scrollY;
+      const viewportThreshold = scrollY + 200; // Section is "active" when within 200px from top
 
       let currentSectionIndex = '0';
 
@@ -3140,9 +3140,10 @@
         const sectionTop = section.offsetTop;
         const sectionBottom = sectionTop + section.offsetHeight;
 
-        if (triggerPoint >= sectionTop && triggerPoint < sectionBottom) {
+        // Section is active when its top is near the top of viewport
+        if (sectionTop <= viewportThreshold && sectionBottom > viewportTop) {
           currentSectionIndex = section.getAttribute('data-section');
-          console.log('>>> MATCH! Section', currentSectionIndex, 'triggerPoint:', triggerPoint, 'sectionTop:', sectionTop, 'sectionBottom:', sectionBottom);
+          console.log('>>> MATCH! Section', currentSectionIndex, 'sectionTop:', sectionTop, 'viewportThreshold:', viewportThreshold);
         }
       });
 

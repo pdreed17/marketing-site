@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kollab</title>
   <meta name="description" content="Find your collaborators. Kollab helps indie artists share ideas, discover collaborators, and finish songs together.">
-  
-  <link rel="icon" type="image/png" href="/favicon.png?v=1771960200">
-  <link rel="apple-touch-icon" href="/favicon.png?v=1771960200">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260225b">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=20260225b">
+  <link rel="apple-touch-icon" href="/favicon.png?v=20260225b">
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)">
   
@@ -409,6 +410,17 @@
       flex-direction: column;
       gap: 16px;
       animation: fade-up 0.6s ease forwards 0.3s;
+      opacity: 0;
+      align-items: center;
+    }
+
+    .platform-notice {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 12px 0 0 0;
+      text-align: center;
+      opacity: 0.8;
+      animation: fade-up 0.6s ease forwards 0.4s;
       opacity: 0;
     }
 
@@ -858,6 +870,145 @@
       font-weight: 500;
       color: var(--text-muted);
       letter-spacing: 0.01em;
+    }
+
+    /* ============================================
+       VISION SECTION
+       ============================================ */
+    .vision-section {
+      min-height: 100vh;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 40px 0;
+      position: relative;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      overflow: hidden;
+    }
+
+    .vision-section .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .vision-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .vision-positioning {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .vision-positioning .gradient-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .vision-tagline {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .vision-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+    }
+
+    .vision-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .vision-card-title {
+      font-family: var(--font-bold);
+      font-size: 24px;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .vision-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .vision-list li {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-primary);
+      padding-left: 20px;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .vision-list li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .vision-footer {
+      text-align: center;
+      margin-top: 48px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .vision-footer-headline {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin: 0 0 24px 0;
+    }
+
+    .vision-footer-headline .gradient-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .vision-footer p {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+      margin: 0;
+      opacity: 0.9;
     }
 
     /* ============================================
@@ -1421,15 +1572,14 @@
        ============================================ */
     .cta-section {
       min-height: 100vh;
-      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0;
+      padding: 40px 0 0 0;
       position: relative;
       scroll-snap-align: start;
       scroll-snap-stop: always;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .cta-section .container {
@@ -1513,11 +1663,79 @@
       justify-content: center;
     }
 
+    #tally-wrapper {
+      position: relative;
+    }
+
+    #tally-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, rgba(46, 46, 54, 0.98));
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    #tally-wrapper.scrolled::after {
+      opacity: 0;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 500;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    #tally-wrapper.scrolled .scroll-indicator {
+      opacity: 0;
+    }
+
+    .scroll-indicator svg {
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
     #tally-wrapper iframe {
-      min-height: 200px !important;
-      height: 220px !important;
+      min-height: 300px !important;
+      max-height: 400px !important;
+      height: 400px !important;
       display: block;
       width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      #tally-wrapper iframe {
+        min-height: 280px !important;
+        max-height: 350px !important;
+        height: 350px !important;
+      }
     }
 
     .signup-form::before {
@@ -2078,6 +2296,40 @@
         right: 40px;
         top: -40px;
       }
+
+      /* Vision Section Mobile */
+      .vision-positioning {
+        font-size: 24px;
+      }
+
+      .vision-tagline {
+        font-size: 16px;
+      }
+
+      .vision-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .vision-card {
+        padding: 24px;
+      }
+
+      .vision-card-title {
+        font-size: 20px;
+      }
+
+      .vision-list li {
+        font-size: 14px;
+      }
+
+      .vision-footer-headline {
+        font-size: 24px;
+      }
+
+      .vision-footer p {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -2090,10 +2342,10 @@
     <div class="vinyl-record">
       <div class="vinyl-text-container">
         <div class="vinyl-text active" data-section="0">
-          <img src="/logo.png?v=2" alt="Kollab" class="vinyl-logo">
+          <img src="/logo.png?v=3" alt="Kollab" class="vinyl-logo">
         </div>
-        <div class="vinyl-text" data-section="1">The<br><span style="color: #6366f1;">Truth</span></div>
-        <div class="vinyl-text" data-section="2">The<br><span style="color: #6366f1;">How</span></div>
+        <div class="vinyl-text" data-section="1">The<br><span style="color: #6366f1;">Vision</span></div>
+        <div class="vinyl-text" data-section="2">The<br><span style="color: #6366f1;">Truth</span></div>
         <div class="vinyl-text" data-section="3">Your<br><span style="color: #6366f1;">Move</span></div>
       </div>
     </div>
@@ -2118,7 +2370,7 @@
             </div>
             
             <h1 class="hero-title">
-              Your best songs are stuck<br>in <span class="gradient-text">voice memos</span>.
+              Your best songs are <span class="gradient-text">stuck</span><br>in your phone.
             </h1>
 
             <p class="hero-subtitle">
@@ -2127,21 +2379,62 @@
             
             <div class="hero-cta">
               <a href="#waitlist" class="btn-primary">
-                Join the Waitlist
+                Get Early Access
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M5 12h14"/>
                   <path d="m12 5 7 7-7 7"/>
                 </svg>
               </a>
             </div>
+            <p class="platform-notice">iOS beta available now • Android coming soon</p>
           </div>
 
         </div>
       </div>
     </section>
 
+    <!-- Vision Section -->
+    <section class="vision-section" data-section="1">
+      <div class="container">
+        <div class="vision-header">
+          <h2 class="vision-positioning">
+            Solo gets you started.<br>
+            Collaboration gets you <span class="gradient-text">finished</span>.
+          </h2>
+        </div>
+
+        <div class="vision-grid">
+          <div class="vision-card">
+            <h3 class="vision-card-title">DISCOVER</h3>
+            <ul class="vision-list">
+              <li>Browse artists' songs by skill.</li>
+              <li>Find collaborators who get your vision.</li>
+              <li>Listen to public ideas.</li>
+              <li>Request to collab.</li>
+              <li>Join songs that inspire you.</li>
+            </ul>
+          </div>
+          <div class="vision-card">
+            <h3 class="vision-card-title">CREATE</h3>
+            <ul class="vision-list">
+              <li>Record ideas on-the-go.</li>
+              <li>Upload audio files.</li>
+              <li>Share work-in-progress.</li>
+              <li>Invite who you want.</li>
+              <li>Control who sees what.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="vision-footer">
+          <h3 class="vision-footer-headline">Your DAW is for production.<br>Kollab is for <span class="gradient-text">collaboration</span>.</h3>
+          <p>Capture ideas on-the-go.<br>Leave timestamped feedback at 0:32, 1:45.<br>Export audio files to Ableton, Logic, FL Studio, or Pro Tools.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Insight Section (Godin: Identity Shift) -->
-    <section class="stats-section" data-section="1">
+    <section class="stats-section" data-section="2">
       <div class="container">
         <div class="stats-header">
           <span class="section-label">YOUR FAVORITE ARTISTS...</span>
@@ -2331,35 +2624,6 @@
       </div>
     </section>
 
-    <!-- Solution: How It Works -->
-    <section class="features-section" id="features" data-section="2">
-      <div class="container">
-        <div class="features-header">
-          <span class="section-label">TWO WAYS TO USE KOLLAB:</span>
-        </div>
-        <div class="features-header-split">
-          <div class="split-column" data-card="1">
-            <h2 class="split-main">COLLAB</h2>
-            <p class="split-sub">to create</p>
-          </div>
-          <div class="split-column" data-card="2">
-            <h2 class="split-main">CREATE</h2>
-            <p class="split-sub">to collab</p>
-          </div>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card" data-card="1">
-            <h3>Discover other artists and the songs they're making. Ask to collaborate or be invited.</h3>
-            <p>You have skills others need.</p>
-          </div>
-          <div class="feature-card" data-card="2">
-            <h3>Record ideas and upload audio files. Allow others to see your work and see who might be the best fit. Invite only who you want.</h3>
-            <p>Others have skills you need.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="cta-section" id="waitlist" data-section="3">
       <div class="cta-bg"></div>
@@ -2367,22 +2631,65 @@
       <div class="container">
         <div class="cta-content">
           <h2 class="cta-title">Your best songs are waiting.<br>It's time to find <span style="color: #6366f1;">your team</span>.</h2>
+          <p class="cta-subtitle">First 50 iOS testers get beta access within 48 hours</p>
 
           <div id="tally-wrapper" class="signup-form">
             <iframe
               data-tally-src="https://tally.so/embed/VL0ePM?alignLeft=1&hideTitle=1&transparentBackground=1"
               loading="lazy"
               width="100%"
-              height="200"
+              height="400"
               frameborder="0"
               marginheight="0"
               marginwidth="0"
               title="Email Interest - Waitlist"
               style="border: none;">
             </iframe>
+            <div class="scroll-indicator">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+              </svg>
+              <span>Scroll for more</span>
+            </div>
           </div>
           <script>
             var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
+
+            // Detect iframe scroll and hide gradient
+            const tallyWrapper = document.getElementById('tally-wrapper');
+            const iframe = tallyWrapper?.querySelector('iframe');
+
+            if (iframe && tallyWrapper) {
+              // Try to listen for scroll events from iframe (if accessible)
+              iframe.addEventListener('load', function() {
+                try {
+                  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                  iframeDoc.addEventListener('scroll', function() {
+                    const scrollTop = iframeDoc.documentElement.scrollTop || iframeDoc.body.scrollTop;
+                    if (scrollTop > 50) {
+                      tallyWrapper.classList.add('scrolled');
+                    }
+                  });
+                } catch(e) {
+                  // Cross-origin restriction - use fallback
+                }
+              });
+
+              // Fallback: Hide indicator on any interaction with the form
+              let interactionTimer;
+              iframe.addEventListener('mouseenter', function() {
+                interactionTimer = setTimeout(function() {
+                  tallyWrapper.classList.add('scrolled');
+                }, 2000); // Hide after 2 seconds of hovering/interacting
+              });
+
+              // Also hide on click
+              iframe.addEventListener('click', function() {
+                setTimeout(function() {
+                  tallyWrapper.classList.add('scrolled');
+                }, 1000);
+              });
+            }
           </script>
         </div>
       </div>
@@ -2392,7 +2699,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
-          <img src="/logo.png?v=2" alt="Kollab">
+          <img src="/logo.png?v=3" alt="Kollab">
         </div>
         <p class="footer-tagline">Better music, together.</p>
 

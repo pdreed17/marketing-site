@@ -3138,8 +3138,8 @@
         const sectionTop = section.offsetTop;
         const sectionBottom = sectionTop + section.offsetHeight;
 
-        // Section is active when it's approaching the viewport (500px before it enters)
-        if (scrollY >= sectionTop - windowHeight + 500) {
+        // Section is active when it enters the viewport
+        if (scrollY >= sectionTop - windowHeight) {
           currentSectionIndex = section.getAttribute('data-section');
           console.log('>>> MATCH! Section', currentSectionIndex, 'scrollY:', scrollY, 'sectionTop:', sectionTop);
         }
